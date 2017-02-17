@@ -19,10 +19,26 @@ const isValid = function (date) {
 export default class Calendar extends React.Component {
 
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             activeMonth: this.initialMonth(props),
-            selection: null
+           
+        };
+
+        // This binding is necessary to make `this` work in the callback
+        this._switchMonth = this._switchMonth.bind(this);
+    }
+
+    _switchMonth(date) {
+
+
+        const {onMonthChange} = this.props
+        if (typeof onMonthChange === 'function') {
+            onMonthChange(date)
+        } else {
+            this.setState({
+                activeMonth: date
+            })
         }
     }
 
@@ -31,14 +47,8 @@ export default class Calendar extends React.Component {
 
         if (isValid(activeMonth)) {
             return activeMonth
-        } else {
-            if (selected) {
-                const selectionStart = (mode === SINGLE_MODE ? selected : selected.start)
-                if (isValid(selectionStart)) {
-                    return startOfMonth(selectionStart)
-                }
-            }
         }
+
         return startOfMonth(today || new Date());
 
     }
@@ -52,35 +62,35 @@ export default class Calendar extends React.Component {
         }
     }
 
+    _today() {
+        return this.props.today || new Date()
+    }
+
     render() {
 
         const {
-            blockClassName,
-            disableDaysOfWeek,
-            headerNextArrow,
-            headerNextTitle,
-            headerPrevArrow,
-            headerPrevTitle,
-            highlighted,
-            maxDate,
-            minDate,
-            minNumberOfWeeks,
-            mode,
+            
             onDayHover,
-            rangeLimit
+           
         } = this.props;
-        
+
         console.log(this.activeMonth());
 
         return (
-                <div>
-                    <p>Yes I am here </p>
-                    
-                    <MonthHeader/>
-                    <Month
+                <table className="table table-bordered">
+                    <thead>
+                
+                    <MonthHeader
+                        onMonthChange={this._switchMonth} 
                         activeMonth={this.activeMonth()}
                         />
-                </div>
+                
+                </thead>
+                <Month
+                    activeMonth={this.activeMonth()}
+                    today={this._today()}
+                    />
+                </table>
                 )
     }
 }

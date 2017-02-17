@@ -1,17 +1,17 @@
 import React from 'react'
-        import classnames from 'classnames'
+        import classnames from 'classnames';
 
 //import {BLOCK_CLASS_NAME} from './consts'
 
-        import formatDate from 'date-fns/format'
+import formatDate from 'date-fns/format';
 
-        export default class Day extends React.Component {
+export default class Day extends React.Component {
 
     constructor(props) {
         super(props);
-       
+
         // This binding is necessary to make `this` work in the callback
-        this._onClick= this._onClick.bind(this);
+        this._onClick = this._onClick.bind(this);
     }
 
     _onClick(e) {

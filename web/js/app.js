@@ -15,7 +15,6 @@ class App extends React.Component {
         this.state = {};
     }
 
-   
     onSelect(selection) {
         console.log(selection)
         this.setState({selection: selection})
@@ -23,20 +22,29 @@ class App extends React.Component {
 
     render() {
         return (
-                <div className="panel panel-default">
+                <div className="container-fluid">
                 
-                    <div  className="panel-heading">Panel heading</div>
-                    <div  className="panel-body">
-                        <p>Hello Calendar</p>
+                    <div className="row">
+                        <div className="col-xs-12 col-md-12">Calendar</div>
+                
                     </div>
                 
+                    <div className="row">
+                        <div className="col-xs-12 col-md-12">Range</div>
                 
-                    <Calendar 
-                        selected ={this.state.selection}
-                        onSelect ={this.onSelect}
-                        />
+                    </div>
+                    <div className="row">
+                        <div className="col-xs-12 col-md-4"></div>
+                        <div className="col-xs-12 col-md-4">
+                            <Calendar 
+                                selected ={this.state.selection}
+                                onSelect ={this.onSelect}
+                                />
+                        </div>
+                        <div className="col-xs-12 col-md-4"></div>
                 
-                
+                    </div>
+             
                 </div>
                 )
     }
