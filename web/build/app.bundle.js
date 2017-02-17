@@ -23891,6 +23891,8 @@ var Day = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Day.__proto__ || Object.getPrototypeOf(Day)).call(this, props));
 
         _this._onClick = _this._onClick.bind(_this);
+
+        _this.state = { isToday: '' };
         return _this;
     }
 
@@ -23899,41 +23901,34 @@ var Day = function (_React$Component) {
         value: function _onClick(e) {
             e.preventDefault();
 
-            console.log('day click');
             var _props = this.props,
                 date = _props.date,
-                onClick = _props.onClick;
+                onClick = _props.onClick,
+                today = _props.today;
+
+
+            console.log('today  ' + today);
+            console.log('date  ' + date);
 
             if (onClick) {
                 onClick(date);
             }
         }
     }, {
-        key: '_onMouseMove',
-        value: function _onMouseMove(e) {
-            e.preventDefault();
-            var _props2 = this.props,
-                date = _props2.date,
-                onMouseMove = _props2.onMouseMove;
-
-            if (onMouseMove) {
-                onMouseMove(date);
-            }
-        }
-    }, {
         key: 'render',
         value: function render() {
-            var _props3 = this.props,
-                date = _props3.date,
-                className = _props3.className,
-                blockClassName = _props3.blockClassName;
+            var _props2 = this.props,
+                date = _props2.date,
+                className = _props2.className,
+                today = _props2.today;
+
 
             return _react2.default.createElement(
                 'td',
                 {
-                    className: (0, _classnames2.default)(blockClassName + '-day', className),
-                    onClick: this._onClick,
-                    onMouseMove: this._onMouseMove.bind(this)
+                    className: (0, _classnames2.default)('day', className),
+                    onClick: this._onClick
+
                 },
                 (0, _format2.default)(date, 'D')
             );
@@ -23947,18 +23942,12 @@ exports.default = Day;
 
 
 Day.propTypes = {
-    blockClassName: _react2.default.PropTypes.string,
+
     className: _react2.default.PropTypes.string,
     date: _react2.default.PropTypes.instanceOf(Date).isRequired,
     onClick: _react2.default.PropTypes.func,
-    onMouseMove: _react2.default.PropTypes.func,
+
     today: _react2.default.PropTypes.instanceOf(Date).isRequired
-};
-
-// Specifies the default values for props:
-Day.defaultProps = {
-    blockClassName: 'day' //BLOCK_CLASS_NAME
-
 };
 
 /***/ }),
@@ -24393,7 +24382,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-//import {BLOCK_CLASS_NAME} from './consts'
 
 var Week = function (_React$Component) {
     _inherits(Week, _React$Component);
@@ -24444,8 +24432,6 @@ var Week = function (_React$Component) {
     }, {
         key: '_dateClasses',
         value: function _dateClasses(date) {
-            var _classnames;
-
             var _props4 = this.props,
                 today = _props4.today,
                 activeMonth = _props4.activeMonth,
@@ -24453,23 +24439,21 @@ var Week = function (_React$Component) {
                 selectedMin = _props4.selectedMin;
 
 
-            return (0, _classnames3.default)((_classnames = {
-                'is-selected': this._dateSelected(date),
-                'is-highlighted': this._dateHighlighted(date),
-                'is-today': (0, _is_same_day2.default)(today, date),
-                'is-current_month': (0, _is_same_month2.default)(date, activeMonth),
-                'is-start_selection': selectedMin && (0, _is_same_day2.default)(selectedMin, date),
-                'is-end_selection': selectedMax && (0, _is_same_day2.default)(selectedMax, date),
+            return (0, _classnames3.default)(_defineProperty({
+
+                'success': (0, _is_same_day2.default)(today, date),
+                'warning': (0, _is_same_month2.default)(date, activeMonth) && !(0, _is_same_day2.default)(today, date),
+
                 'is-prev_month': date.getMonth() !== activeMonth.getMonth() && (0, _is_before2.default)(date, activeMonth),
                 'is-next_month': date.getMonth() !== activeMonth.getMonth() && (0, _is_after2.default)(date, activeMonth)
-            }, _defineProperty(_classnames, (0, _is_weekend2.default)(date) ? 'is-weekend' : 'is-working_day', true), _defineProperty(_classnames, this._dateSelectable(date) ? 'is-selectable' : 'is-not_selectable', true), _classnames));
+            }, (0, _is_weekend2.default)(date) ? 'is-weekend' : 'is-working_day', true));
         }
     }, {
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
                 'tr',
-                { className: this.props.blockClassName + '-week' },
+                { className: 'week' },
                 this._renderDays()
             );
         }

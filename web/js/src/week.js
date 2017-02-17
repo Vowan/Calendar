@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 
 import Day from './day.js';
-//import {BLOCK_CLASS_NAME} from './consts'
+
 
 import eachDay from 'date-fns/each_day';
 import startOfDay from 'date-fns/start_of_day';
@@ -58,22 +58,22 @@ export default class Week extends React.Component {
         const {today, activeMonth, selectedMax, selectedMin} = this.props
 
         return classnames({
-            'is-selected': this._dateSelected(date),
-            'is-highlighted': this._dateHighlighted(date),
-            'is-today': isSameDay(today, date),
-            'is-current_month': isSameMonth(date, activeMonth),
-            'is-start_selection': selectedMin && isSameDay(selectedMin, date),
-            'is-end_selection': selectedMax && isSameDay(selectedMax, date),
+            
+            
+            'success': isSameDay(today, date),
+            'warning': isSameMonth(date, activeMonth) && !isSameDay(today, date),
+            
+            
             'is-prev_month': (date.getMonth() !== activeMonth.getMonth() && isBefore(date, activeMonth)),
             'is-next_month': (date.getMonth() !== activeMonth.getMonth() && isAfter(date, activeMonth)),
             [isWeekend(date) ? 'is-weekend' : 'is-working_day']: true,
-            [this._dateSelectable(date) ? 'is-selectable' : 'is-not_selectable']: true
+            
         })
     }
 
     render() {
         return (
-                <tr className={`${this.props.blockClassName}-week`}>
+                <tr className='week'>
                     {this._renderDays()}
                 </tr>
                 )
