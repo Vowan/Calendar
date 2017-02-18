@@ -36,7 +36,7 @@ class DefaultController extends Controller {
         $endDate = str_replace(' ', '-', $parametersAsArray['endDate']);
         $endDate = \DateTime::createFromFormat('!d-m-Y', $endDate);
 
-        if ($startDate < $choosenDate && $choosenDate < $endDate) {
+        if ($startDate <= $choosenDate && $choosenDate <= $endDate) {
             $resp = "попадает";
         } else {
             $resp = "не попадает";

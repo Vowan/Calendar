@@ -12,7 +12,7 @@ export default class Day extends React.Component {
         // This binding is necessary to make `this` work in the callback
         this._onClick = this._onClick.bind(this);
 
-        this.state = {isToday: ''};
+     
     }
 
     _onClick(e) {
@@ -27,7 +27,7 @@ export default class Day extends React.Component {
     }
 
     render() {
-        const {date, className, today} = this.props
+        const {date, className} = this.props
 
 
         return (
@@ -46,9 +46,7 @@ Day.propTypes = {
 
     className: React.PropTypes.string,
     date: React.PropTypes.instanceOf(Date).isRequired,
-    onClick: React.PropTypes.func,
-
-    today: React.PropTypes.instanceOf(Date).isRequired
+   
 };
 
 

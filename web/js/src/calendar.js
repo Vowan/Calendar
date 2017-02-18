@@ -70,11 +70,7 @@ export default class Calendar extends React.Component {
 
     render() {
 
-        const {         
-            onClick
-               } = this.props;
-
-       
+        const { onClick,  startDate, endDate} = this.props;
 
         return (
                 <table className="table table-bordered">
@@ -89,7 +85,9 @@ export default class Calendar extends React.Component {
                 <Month
                     activeMonth={this.activeMonth()}
                     today={this._today()}
-                     onClick={onClick}
+                    onClick={onClick}
+                    startDate = {startDate}
+                    endDate = {endDate}
                     />
                 </table>
                 )

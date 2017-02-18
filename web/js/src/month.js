@@ -26,7 +26,6 @@ export default class Month extends React.Component {
 
     }
 
-      
     render() {
         //const {blockClassName} = this.props
         return (
@@ -51,16 +50,17 @@ export default class Month extends React.Component {
         const {
             activeMonth,
             today,
-            onDayHover,
-            onClick
+            onClick,
+            startDate,
+            endDate
         } = this.props
         const weeks = []
 
         let date = startOfWeek(startOfMonth(activeMonth), {weekStartsOn: 1})
-        const endDate = endOfWeek(endOfMonth(activeMonth), {weekStartsOn: 1})
+        const endWeek = endOfWeek(endOfMonth(activeMonth), {weekStartsOn: 1})
 
 
-        while (isBefore(date, endDate) || isSameDay(date, endDate)) {
+        while (isBefore(date, endWeek) || isSameDay(date, endWeek)) {
             weeks.push(date)
             date = addDays(date, 7)
         }
@@ -71,12 +71,11 @@ export default class Month extends React.Component {
                     <Week
                         key={week.getTime()}
                         date={week}
-                    
                         activeMonth={activeMonth}
-                        onDayHover={onDayHover}
                         onClick={onClick}
-                       
                         today={today}
+                        startDate = {startDate}
+                        endDate = {endDate}
                     
                         />
                     )

@@ -7752,7 +7752,10 @@ var Calendar = function (_React$Component) {
     }, {
         key: "render",
         value: function render() {
-            var onClick = this.props.onClick;
+            var _props2 = this.props,
+                onClick = _props2.onClick,
+                startDate = _props2.startDate,
+                endDate = _props2.endDate;
 
 
             return React.createElement(
@@ -7769,7 +7772,9 @@ var Calendar = function (_React$Component) {
                 React.createElement(_month2.default, {
                     activeMonth: this.activeMonth(),
                     today: this._today(),
-                    onClick: onClick
+                    onClick: onClick,
+                    startDate: startDate,
+                    endDate: endDate
                 })
             );
         }
@@ -11419,7 +11424,7 @@ var InputField = function (_React$Component) {
 
         _this.state = {
             startDayVisible: false,
-            visibleDay: props.initDate
+            visibleDay: (0, _format2.default)(props.initDate, 'D M YYYY')
         };
 
         return _this;
@@ -11439,7 +11444,7 @@ var InputField = function (_React$Component) {
 
 
             if (onClick) {
-                onClick((0, _format2.default)(date, 'D M YYYY'));
+                onClick(date);
             }
         }
     }, {
@@ -24457,7 +24462,6 @@ var Day = function (_React$Component) {
 
         _this._onClick = _this._onClick.bind(_this);
 
-        _this.state = { isToday: '' };
         return _this;
     }
 
@@ -24481,8 +24485,7 @@ var Day = function (_React$Component) {
         value: function render() {
             var _props2 = this.props,
                 date = _props2.date,
-                className = _props2.className,
-                today = _props2.today;
+                className = _props2.className;
 
 
             return _react2.default.createElement(
@@ -24506,10 +24509,8 @@ exports.default = Day;
 Day.propTypes = {
 
     className: _react2.default.PropTypes.string,
-    date: _react2.default.PropTypes.instanceOf(Date).isRequired,
-    onClick: _react2.default.PropTypes.func,
+    date: _react2.default.PropTypes.instanceOf(Date).isRequired
 
-    today: _react2.default.PropTypes.instanceOf(Date).isRequired
 };
 
 /***/ }),
@@ -24822,15 +24823,16 @@ var Month = function (_React$Component) {
             var _props2 = this.props,
                 activeMonth = _props2.activeMonth,
                 today = _props2.today,
-                onDayHover = _props2.onDayHover,
-                onClick = _props2.onClick;
+                onClick = _props2.onClick,
+                startDate = _props2.startDate,
+                endDate = _props2.endDate;
 
             var weeks = [];
 
             var date = (0, _start_of_week2.default)((0, _start_of_month2.default)(activeMonth), { weekStartsOn: 1 });
-            var endDate = (0, _end_of_week2.default)((0, _end_of_month2.default)(activeMonth), { weekStartsOn: 1 });
+            var endWeek = (0, _end_of_week2.default)((0, _end_of_month2.default)(activeMonth), { weekStartsOn: 1 });
 
-            while ((0, _is_before2.default)(date, endDate) || (0, _is_same_day2.default)(date, endDate)) {
+            while ((0, _is_before2.default)(date, endWeek) || (0, _is_same_day2.default)(date, endWeek)) {
                 weeks.push(date);
                 date = (0, _add_days2.default)(date, 7);
             }
@@ -24839,12 +24841,11 @@ var Month = function (_React$Component) {
                 return React.createElement(_week2.default, {
                     key: week.getTime(),
                     date: week,
-
                     activeMonth: activeMonth,
-                    onDayHover: onDayHover,
                     onClick: onClick,
-
-                    today: today
+                    today: today,
+                    startDate: startDate,
+                    endDate: endDate
 
                 });
             });
@@ -24949,56 +24950,31 @@ var Week = function (_React$Component) {
     }
 
     _createClass(Week, [{
-        key: '_dateSelectable',
-        value: function _dateSelectable(date) {
-            var _props = this.props,
-                minDate = _props.minDate,
-                maxDate = _props.maxDate;
-
-            if (minDate && maxDate) {
-                return (0, _is_within_range2.default)(date, minDate, maxDate);
-            } else if (minDate && !maxDate) {
-                return (0, _is_after2.default)(date, minDate) || (0, _is_equal2.default)(date, minDate);
-            } else if (maxDate && !minDate) {
-                return (0, _is_before2.default)(date, maxDate) || (0, _is_equal2.default)(date, maxDate);
-            } else {
-                return true;
-            }
-        }
-    }, {
         key: '_dateSelected',
         value: function _dateSelected(date) {
-            var _props2 = this.props,
-                selectedMin = _props2.selectedMin,
-                selectedMax = _props2.selectedMax;
+            var _props = this.props,
+                startDate = _props.startDate,
+                endDate = _props.endDate;
 
-            return selectedMin && selectedMax && (0, _is_within_range2.default)((0, _start_of_day2.default)(date), (0, _start_of_day2.default)(selectedMin), (0, _start_of_day2.default)(selectedMax));
-        }
-    }, {
-        key: '_dateHighlighted',
-        value: function _dateHighlighted(date) {
-            var _props3 = this.props,
-                highlightedStart = _props3.highlightedStart,
-                highlightedEnd = _props3.highlightedEnd;
 
-            if (!highlightedStart || !highlightedEnd) return false;
+            if ((0, _is_after2.default)(startDate, endDate)) {
+                return false;
+            }
 
-            return (0, _is_within_range2.default)((0, _start_of_day2.default)(date), (0, _start_of_day2.default)(highlightedStart), (0, _start_of_day2.default)(highlightedEnd));
+            return startDate && endDate && (0, _is_within_range2.default)((0, _start_of_day2.default)(date), (0, _start_of_day2.default)(startDate), (0, _start_of_day2.default)(endDate));
         }
     }, {
         key: '_dateClasses',
         value: function _dateClasses(date) {
-            var _props4 = this.props,
-                today = _props4.today,
-                activeMonth = _props4.activeMonth,
-                selectedMax = _props4.selectedMax,
-                selectedMin = _props4.selectedMin;
+            var _props2 = this.props,
+                today = _props2.today,
+                activeMonth = _props2.activeMonth;
 
 
             return (0, _classnames3.default)(_defineProperty({
-
-                'success': (0, _is_same_day2.default)(today, date),
+                'danger': this._dateSelected(date) && !(0, _is_same_day2.default)(today, date),
                 'warning': (0, _is_same_month2.default)(date, activeMonth) && !(0, _is_same_day2.default)(today, date),
+                'success': (0, _is_same_day2.default)(today, date),
 
                 'is-prev_month': date.getMonth() !== activeMonth.getMonth() && (0, _is_before2.default)(date, activeMonth),
                 'is-next_month': date.getMonth() !== activeMonth.getMonth() && (0, _is_after2.default)(date, activeMonth)
@@ -25021,29 +24997,26 @@ var Week = function (_React$Component) {
             // console.log(this.props);
             // console.log(this.props['data']);
 
-            var _props5 = this.props,
-                date = _props5.date,
-                today = _props5.today,
-                onClick = _props5.onClick,
-                onDayMouseMove = _props5.onDayMouseMove,
-                blockClassName = _props5.blockClassName;
+            var _props3 = this.props,
+                date = _props3.date,
+                today = _props3.today,
+                onClick = _props3.onClick;
 
             // console.log(date);
 
             var startDate = (0, _start_of_week2.default)(date, { weekStartsOn: 1 });
             var endDate = (0, _end_of_week2.default)(date, { weekStartsOn: 1 });
             return (0, _each_day2.default)(startDate, endDate).map(function (day) {
-                var data = _this2.props.data[(0, _format2.default)(day, 'YYYY-MM-DD')];
-                var selectable = _this2._dateSelectable(day);
+
                 return _react2.default.createElement(_day2.default, {
-                    blockClassName: blockClassName,
+
                     key: day.getTime(),
                     date: day,
-                    data: data,
-                    className: _this2._dateClasses(day, data),
+
+                    className: _this2._dateClasses(day),
                     today: today,
-                    onClick: selectable ? onClick : null,
-                    onMouseMove: selectable ? onDayMouseMove : null
+                    onClick: onClick
+
                 });
             });
         }
@@ -25057,25 +25030,10 @@ exports.default = Week;
 
 Week.propTypes = {
     activeMonth: _react2.default.PropTypes.instanceOf(Date).isRequired,
-    blockClassName: _react2.default.PropTypes.string,
-    data: _react2.default.PropTypes.object,
+
     date: _react2.default.PropTypes.instanceOf(Date).isRequired,
-    highlightedEnd: _react2.default.PropTypes.instanceOf(Date),
-    highlightedStart: _react2.default.PropTypes.instanceOf(Date),
-    maxDate: _react2.default.PropTypes.instanceOf(Date),
-    minDate: _react2.default.PropTypes.instanceOf(Date),
-    onDayClick: _react2.default.PropTypes.func.isRequired,
-    onDayMouseMove: _react2.default.PropTypes.func.isRequired,
-    selectedMax: _react2.default.PropTypes.instanceOf(Date),
-    selectedMin: _react2.default.PropTypes.instanceOf(Date),
+
     today: _react2.default.PropTypes.instanceOf(Date).isRequired
-};
-
-// Specifies the default values for props:
-Week.defaultProps = {
-    data: {},
-    blockClassName: 'week' // BLOCK_CLASS_NAME
-
 };
 
 /***/ }),
@@ -25128,8 +25086,11 @@ var App = function (_React$Component) {
         _this.onEndDate = _this.onEndDate.bind(_this);
         _this.onChoosenDate = _this.onChoosenDate.bind(_this);
 
-        _this.startDate = (0, _format2.default)(new Date(2016, 11, 17), 'D M YYYY');
-        _this.endDate = (0, _format2.default)(new Date(2017, 11, 17), 'D M YYYY');
+        _this.state = {
+            startDate: new Date(2016, 11, 17),
+            endDate: new Date(2017, 11, 17)
+        };
+
         _this.choosenDate = false;
         return _this;
     }
@@ -25137,12 +25098,17 @@ var App = function (_React$Component) {
     _createClass(App, [{
         key: 'onStartDate',
         value: function onStartDate(date) {
-            this.startDate = date;
+            this.setState({
+                startDate: date
+            });
         }
     }, {
         key: 'onEndDate',
         value: function onEndDate(date) {
-            this.endDate = date;
+
+            this.setState({
+                endDate: date
+            });
         }
     }, {
         key: 'onChoosenDate',
@@ -25156,13 +25122,13 @@ var App = function (_React$Component) {
                 },
                 body: JSON.stringify({
                     choosenDate: this.choosenDate,
-                    startDate: this.startDate,
-                    endDate: this.endDate
+                    startDate: (0, _format2.default)(this.state.startDate, 'D M YYYY'),
+                    endDate: (0, _format2.default)(this.state.endDate, 'D M YYYY')
                 })
             }).then(function (response) {
                 return response.json();
             }).then(function (json) {
-                console.log(json);
+                alert(json['ответ']);
             }).catch(function (ex) {
                 alert('parsing failed', ex);
             });
@@ -25191,7 +25157,9 @@ var App = function (_React$Component) {
                         'div',
                         { className: 'col-xs-12 col-md-4' },
                         React.createElement(_calendar2.default, {
-                            onClick: this.onChoosenDate
+                            onClick: this.onChoosenDate,
+                            startDate: this.state.startDate,
+                            endDate: this.state.endDate
                         })
                     ),
                     React.createElement('div', { className: 'col-xs-12 col-md-4' })
@@ -25205,7 +25173,7 @@ var App = function (_React$Component) {
                         React.createElement(_input_field2.default, {
 
                             onClick: this.onStartDate,
-                            initDate: this.startDate
+                            initDate: this.state.startDate
                         })
                     ),
                     React.createElement(
@@ -25214,7 +25182,7 @@ var App = function (_React$Component) {
                         React.createElement(_input_field2.default, {
 
                             onClick: this.onEndDate,
-                            initDate: this.endDate
+                            initDate: this.state.endDate
                         })
                     )
                 )

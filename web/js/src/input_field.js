@@ -16,7 +16,7 @@ export default class InputField extends React.Component {
 
         this.state = {
             startDayVisible: false,
-            visibleDay: props.initDate
+            visibleDay: formatDate(props.initDate, 'D M YYYY')
         };
 
 
@@ -33,7 +33,7 @@ export default class InputField extends React.Component {
         const {onClick} = this.props;
 
         if (onClick) {
-            onClick(formatDate(date, 'D M YYYY'));
+            onClick(date);
         }
 
     }

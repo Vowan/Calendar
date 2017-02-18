@@ -21,51 +21,33 @@ export default class Week extends React.Component {
 
     constructor(props) {
         super(props);
-        
-      }
 
-    _dateSelectable(date) {
-        const {minDate, maxDate} = this.props
-        if (minDate && maxDate) {
-            return isWithinRange(date, minDate, maxDate)
-        } else if (minDate && !maxDate) {
-            return isAfter(date, minDate) || isEqual(date, minDate)
-        } else if (maxDate && !minDate) {
-            return isBefore(date, maxDate) || isEqual(date, maxDate)
-        } else {
-            return true
-        }
     }
 
+    
+
     _dateSelected(date) {
-        const {selectedMin, selectedMax} = this.props
-        return (selectedMin && selectedMax)
+        const {startDate, endDate} = this.props
+        
+        if(isAfter(startDate, endDate)){
+            return false;
+        }
+
+        return (startDate && endDate)
                 && isWithinRange(
                         startOfDay(date),
-                        startOfDay(selectedMin),
-                        startOfDay(selectedMax)
+                        startOfDay(startDate),
+                        startOfDay(endDate)
                         )
     }
 
-    _dateHighlighted(date) {
-        const {highlightedStart, highlightedEnd} = this.props
-        if (!highlightedStart || !highlightedEnd)
-            return false
-
-        return isWithinRange(
-                startOfDay(date),
-                startOfDay(highlightedStart),
-                startOfDay(highlightedEnd)
-                )
-    }
-
     _dateClasses(date) {
-        const {today, activeMonth, selectedMax, selectedMin} = this.props
+        const {today, activeMonth} = this.props
 
         return classnames({
-
-            'success': isSameDay(today, date),
+            'danger': this._dateSelected(date) && !isSameDay(today, date),
             'warning': isSameMonth(date, activeMonth) && !isSameDay(today, date),
+            'success': isSameDay(today, date),
 
             'is-prev_month': (date.getMonth() !== activeMonth.getMonth() && isBefore(date, activeMonth)),
             'is-next_month': (date.getMonth() !== activeMonth.getMonth() && isAfter(date, activeMonth)),
@@ -87,25 +69,24 @@ export default class Week extends React.Component {
         // console.log(this.props);
         // console.log(this.props['data']);
 
-        const {date, today, onClick, onDayMouseMove, blockClassName} = this.props;
+        const {date, today, onClick} = this.props;
 
         // console.log(date);
 
         const startDate = startOfWeek(date, {weekStartsOn: 1});
         const endDate = endOfWeek(date, {weekStartsOn: 1});
         return eachDay(startDate, endDate).map((day) => {
-            const data = this.props.data[format(day, 'YYYY-MM-DD')]
-            const selectable = this._dateSelectable(day)
+            
             return (
                     <Day
-                        blockClassName={blockClassName}
+                       
                         key={day.getTime()}
                         date={day}
-                        data={data}
-                        className={this._dateClasses(day, data)}
+                        
+                        className={this._dateClasses(day)}
                         today={today}
-                        onClick={selectable ? onClick : null}
-                        onMouseMove={selectable ? onDayMouseMove : null}
+                        onClick={onClick}
+                       
                         />
                     )
         })
@@ -115,23 +96,9 @@ export default class Week extends React.Component {
 
 Week.propTypes = {
     activeMonth: React.PropTypes.instanceOf(Date).isRequired,
-    blockClassName: React.PropTypes.string,
-    data: React.PropTypes.object,
+    
     date: React.PropTypes.instanceOf(Date).isRequired,
-    highlightedEnd: React.PropTypes.instanceOf(Date),
-    highlightedStart: React.PropTypes.instanceOf(Date),
-    maxDate: React.PropTypes.instanceOf(Date),
-    minDate: React.PropTypes.instanceOf(Date),
-    onDayClick: React.PropTypes.func.isRequired,
-    onDayMouseMove: React.PropTypes.func.isRequired,
-    selectedMax: React.PropTypes.instanceOf(Date),
-    selectedMin: React.PropTypes.instanceOf(Date),
+
     today: React.PropTypes.instanceOf(Date).isRequired
 };
 
-// Specifies the default values for props:
-Week.defaultProps = {
-    data: {},
-    blockClassName: 'week'// BLOCK_CLASS_NAME
-
-};
