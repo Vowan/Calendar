@@ -1,5 +1,8 @@
-//import styles from 'bootstrap/dist/css/bootstrap.css';
-//import style from '../css/styles.css';
+import styles from 'bootstrap/dist/css/bootstrap.css';
+import style from '../css/styles.css';
+
+import styl from '../css/calendar.scss';
+
 var React = require('react');
 var ReactDOM = require('react-dom');
 
@@ -20,26 +23,26 @@ class App extends React.Component {
         this.onStartDate = this.onStartDate.bind(this);
         this.onEndDate = this.onEndDate.bind(this);
         this.onChoosenDate = this.onChoosenDate.bind(this);
-        
+
         this.state = {
             startDate: new Date(2016, 11, 17),
             endDate: new Date(2017, 11, 17)
         }
-        
+
         this.choosenDate = false;
     }
 
     onStartDate(date) {
-         this.setState({
-            startDate:date
+        this.setState({
+            startDate: date
         });
 
     }
 
     onEndDate(date) {
-       
+
         this.setState({
-            endDate:date
+            endDate: date
         });
     }
 
@@ -67,20 +70,24 @@ class App extends React.Component {
     }
 
     render() {
-
-
-
         return (
                 <div className="container-fluid">
                 
                     <div className="row">
-                        <div className="col-xs-12 col-md-12">Calendar</div>
+                        <div className="col-xs-12 col-md-12 header">Calendar</div>
                 
                     </div>
                 
                 
                     <div className="row">
-                        <div className="col-xs-12 col-md-4"></div>
+                        <div className="col-xs-12 col-md-4">
+                            <InputField
+                                rangeDate="start"
+                                onClick ={this.onStartDate}
+                                initDate ={this.state.startDate}
+                                />
+                
+                        </div>
                         <div className="col-xs-12 col-md-4">
                             <Calendar 
                                 onClick ={this.onChoosenDate}
@@ -88,22 +95,9 @@ class App extends React.Component {
                                 endDate = {this.state.endDate}
                                 />
                         </div>
-                        <div className="col-xs-12 col-md-4"></div>
-                
-                    </div>
-                
-                    <div className="row">
-                        <div className="col-xs-12 col-md-6">
+                        <div className="col-xs-12 col-md-4">
                             <InputField
-                
-                                onClick ={this.onStartDate}
-                                initDate ={this.state.startDate}
-                                />
-                
-                        </div>
-                        <div className="col-xs-12 col-md-6">
-                            <InputField
-                
+                                rangeDate="end"
                                 onClick ={this.onEndDate}
                                 initDate ={this.state.endDate}
                                 />
@@ -111,6 +105,7 @@ class App extends React.Component {
                 
                     </div>
                 
+                                   
                 </div>
                 )
     }

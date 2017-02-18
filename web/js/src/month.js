@@ -27,7 +27,6 @@ export default class Month extends React.Component {
     }
 
     render() {
-        //const {blockClassName} = this.props
         return (
                 <tbody className='callendar-month'>
                 
@@ -43,7 +42,7 @@ export default class Month extends React.Component {
         if (disableDaysOfWeek)
             return null
 
-        return <DaysOfWeek blockClassName={blockClassName} />
+        return <DaysOfWeek />
     }
 
     renderWeeks() {

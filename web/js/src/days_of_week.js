@@ -7,7 +7,7 @@ const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 export default class DaysOfWeek extends React.Component {
   
   render() {
-    const {blockClassName} = this.props;
+   
     return (
       <tr className='days_of_week'>
         {daysOfWeek.map((day, index) => {

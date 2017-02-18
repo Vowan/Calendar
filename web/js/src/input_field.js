@@ -16,7 +16,7 @@ export default class InputField extends React.Component {
 
         this.state = {
             startDayVisible: false,
-            visibleDay: formatDate(props.initDate, 'D M YYYY')
+            visibleDay: formatDate(props.initDate, 'D MMMM YYYY')
         };
 
 
@@ -27,7 +27,7 @@ export default class InputField extends React.Component {
         //    console.log('Calendar click ' + date);
         this.setState({
             startDayVisible: false,
-            visibleDay: formatDate(date, 'D M YYYY')
+            visibleDay: formatDate(date, 'D MMMM YYYY')
         });
 
         const {onClick} = this.props;
@@ -43,14 +43,19 @@ export default class InputField extends React.Component {
 
     }
     render() {
-
+        
+        const {rangeDate} = this.props;
 
         return (
-                <div>
+                <div className ="form-group">
+                    <label >Click to change  {rangeDate} date
+                    </label>
                     <input
+                       
                         type="text"
                         value={this.state.visibleDay}
                         onClick={this.handleClick}
+                        className ="form-control"
                         />
                     <div>
                         {

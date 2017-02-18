@@ -24,9 +24,7 @@ export default class Week extends React.Component {
 
     }
 
-    
-
-    _dateSelected(date) {
+     _dateSelected(date) {
         const {startDate, endDate} = this.props
         
         if(isAfter(startDate, endDate)){
@@ -66,12 +64,7 @@ export default class Week extends React.Component {
 
     _renderDays() {
 
-        // console.log(this.props);
-        // console.log(this.props['data']);
-
         const {date, today, onClick} = this.props;
-
-        // console.log(date);
 
         const startDate = startOfWeek(date, {weekStartsOn: 1});
         const endDate = endOfWeek(date, {weekStartsOn: 1});

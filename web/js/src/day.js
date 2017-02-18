@@ -11,13 +11,11 @@ export default class Day extends React.Component {
 
         // This binding is necessary to make `this` work in the callback
         this._onClick = this._onClick.bind(this);
-
-     
+ 
     }
 
     _onClick(e) {
         e.preventDefault()
-
 
         const {date, onClick, today} = this.props;
 

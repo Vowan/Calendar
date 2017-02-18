@@ -23,10 +23,14 @@ module.exports = {
                 }
             },
             {
-            //    test: /\.css/,
-             //   loader: ExtractTextPlugin.extract("css-loader")
+                test: /\.css/,
+                loader: ExtractTextPlugin.extract("css-loader")
             },
-           // { test: /\.(png|woff|woff2|eot|ttf|svg)$/, loaders: ['url-loader?limit=100000', 'file-loader']}
+            {
+                test: /\.scss$/,
+                loaders: ExtractTextPlugin.extract('css-loader!sass-loader')
+            },
+            { test: /\.(png|woff|woff2|eot|ttf|svg)$/, loaders: ['url-loader?limit=100000', 'file-loader']}
         ]
     },
     stats: {
@@ -34,7 +38,7 @@ module.exports = {
     },
     devtool: 'source-map',
     plugins: [
-  //      new ExtractTextPlugin("styles.css")
+       new ExtractTextPlugin("styles.css")
     ]
 };
 
