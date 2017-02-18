@@ -26,14 +26,7 @@ export default class Month extends React.Component {
 
     }
 
-    _onDayClick(date) {
-        const {mode} = this.props
-
-
-
-    }
-
-   
+      
     render() {
         //const {blockClassName} = this.props
         return (
@@ -58,7 +51,8 @@ export default class Month extends React.Component {
         const {
             activeMonth,
             today,
-            onDayHover
+            onDayHover,
+            onClick
         } = this.props
         const weeks = []
 
@@ -80,8 +74,8 @@ export default class Month extends React.Component {
                     
                         activeMonth={activeMonth}
                         onDayHover={onDayHover}
-                        onDayClick={this._onDayClick.bind(this)}
-                        onDayMouseMove={this._onDayMouseMove.bind(this)}
+                        onClick={onClick}
+                       
                         today={today}
                     
                         />

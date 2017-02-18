@@ -1,7 +1,6 @@
-import React from 'react'
-        import classnames from 'classnames';
+import React from 'react';
+import classnames from 'classnames';
 
-//import {BLOCK_CLASS_NAME} from './consts'
 
 import formatDate from 'date-fns/format';
 
@@ -12,7 +11,7 @@ export default class Day extends React.Component {
 
         // This binding is necessary to make `this` work in the callback
         this._onClick = this._onClick.bind(this);
-        
+
         this.state = {isToday: ''};
     }
 
@@ -22,18 +21,15 @@ export default class Day extends React.Component {
 
         const {date, onClick, today} = this.props;
 
-        console.log('today  ' + today);
-        console.log('date  ' + date);
-
-        if (onClick) {
+       if (onClick) {
             onClick(date)
         }
     }
 
     render() {
         const {date, className, today} = this.props
-        
-       
+
+
         return (
                 <td
                     className={classnames('day', className)}

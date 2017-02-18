@@ -65,16 +65,16 @@ export default class Calendar extends React.Component {
     _today() {
         return this.props.today || new Date()
     }
+    
+    
 
     render() {
 
-        const {
-            
-            onDayHover,
-           
-        } = this.props;
+        const {         
+            onClick
+               } = this.props;
 
-        console.log(this.activeMonth());
+       
 
         return (
                 <table className="table table-bordered">
@@ -89,6 +89,7 @@ export default class Calendar extends React.Component {
                 <Month
                     activeMonth={this.activeMonth()}
                     today={this._today()}
+                     onClick={onClick}
                     />
                 </table>
                 )

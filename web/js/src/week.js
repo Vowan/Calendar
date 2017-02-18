@@ -18,7 +18,12 @@ import isSameDay from 'date-fns/is_same_day';
 import isSameMonth from 'date-fns/is_same_month';
 
 export default class Week extends React.Component {
-    
+
+    constructor(props) {
+        super(props);
+        
+      }
+
     _dateSelectable(date) {
         const {minDate, maxDate} = this.props
         if (minDate && maxDate) {
@@ -58,16 +63,14 @@ export default class Week extends React.Component {
         const {today, activeMonth, selectedMax, selectedMin} = this.props
 
         return classnames({
-            
-            
+
             'success': isSameDay(today, date),
             'warning': isSameMonth(date, activeMonth) && !isSameDay(today, date),
-            
-            
+
             'is-prev_month': (date.getMonth() !== activeMonth.getMonth() && isBefore(date, activeMonth)),
             'is-next_month': (date.getMonth() !== activeMonth.getMonth() && isAfter(date, activeMonth)),
             [isWeekend(date) ? 'is-weekend' : 'is-working_day']: true,
-            
+
         })
     }
 
@@ -80,14 +83,14 @@ export default class Week extends React.Component {
     }
 
     _renderDays() {
-        
-       // console.log(this.props);
+
+        // console.log(this.props);
         // console.log(this.props['data']);
-        
-        const {date, today, onDayClick, onDayMouseMove, blockClassName} = this.props;
-        
-       // console.log(date);
-        
+
+        const {date, today, onClick, onDayMouseMove, blockClassName} = this.props;
+
+        // console.log(date);
+
         const startDate = startOfWeek(date, {weekStartsOn: 1});
         const endDate = endOfWeek(date, {weekStartsOn: 1});
         return eachDay(startDate, endDate).map((day) => {
@@ -101,7 +104,7 @@ export default class Week extends React.Component {
                         data={data}
                         className={this._dateClasses(day, data)}
                         today={today}
-                        onClick={selectable ? onDayClick : null}
+                        onClick={selectable ? onClick : null}
                         onMouseMove={selectable ? onDayMouseMove : null}
                         />
                     )
